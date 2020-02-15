@@ -7,15 +7,11 @@ except ImportError:
 
 
 def set_inner_angle(inner_angle):
-    try:
-        stepper.setAngle()
-    except:
-        print('inner angle on inner motor is set to: ' + str(inner_angle))
+    stepper.setAngle(inner_angle)
+    
 def set_outer_angle(outer_angle):
-    try:
-        servo.setAngle()
-    except:
-        print('outer angle on outer motor is set to: ' + str(outer_angle))
+    servo.setAngle(outer_angle)
+    
 
 def convert_xy_to_angles(x, y):
     try:
@@ -51,19 +47,19 @@ def calculations(start = (0,0), end = (0,0)):
     #start calculations
     start_x, start_y = start
     end_x, end_y = end
-    length_x = start_x - end_x #abs?
-    length_y = start_y - end_y #abs?
+    length_x = end_x - start_x #abs?
+    length_y = end_y - start_y #abs?
 
     length = math.sqrt(length_x ** 2 + length_y ** 2) #total line length
 
-    number_of_steps = int(length * 100)
+    number_of_steps = int(length * 50)
 
     length_of_step_x = length_x / number_of_steps
     length_of_step_y = length_y / number_of_steps
+    
+
 
     return length_of_step_x, length_of_step_y, number_of_steps
-
-
 
 
 def draw_line(start = (0,0), end = (0,0)):
@@ -215,12 +211,18 @@ if __name__ == '__main__':
 
     stepper = StepperMotor()
     servo = ServoMotor()
-
+    
+    servo.setAngle(0)
     #test 1
     start = (3, 10)
     end = (3, 6)
-    test(start, end)
+    #test(start, end)
+    
     #test 2
     start = (3, 8)
     end = (-3, 8)
-    test(start, end)
+    #test(start, end)
+    
+    
+    del stepper
+    del servo

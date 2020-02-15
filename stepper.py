@@ -44,20 +44,27 @@ class StepperMotor:
             steps = self.transform_angle_to_steps(angle_to_move)
             for step in range(steps):
                 self.backward_step()
+                self.current_angle += 360/50
         else:
             angle_to_move = abs(angle_to_move)
             steps = self.transform_angle_to_steps(angle_to_move)
             for step in range(steps):
                 self.forward_step()
+                self.current_angle -= 360/50
         
-        self.current_angle = angle
+        
+        
 
 
-            
+
+    def move(self, angle):
+        self.setup()
+        self.setAngle(angle)
+        GPIO.cleanup()
 
     def _reset_position(self):
         self.setAngle(0)
     
     def __del__(self):
-        self._reset_position()
+        #self._reset_position()
         GPIO.cleanup()

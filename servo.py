@@ -28,7 +28,6 @@ class ServoMotor:
         )
 
         # construct full angle list
-
         for angle in range(136):
             self._full_angle_list.append([angle, int(angles_to_pw(angle))])
 
@@ -40,8 +39,8 @@ class ServoMotor:
     def setAngle(self,angle):
         assert(angle <= 135 and angle >= 0)
         
-        pulse_width = self._full_angle_list[angle][1]
-
+        pulse_width = self._full_angle_list[int(angle)][1]
+        
         self._rpi.set_servo_pulsewidth(self._PWM_PIN, pulse_width)
         sleep(0.1)
         self._rpi.set_servo_pulsewidth(self._PWM_PIN, 0)
@@ -52,3 +51,4 @@ class ServoMotor:
 
     def __del__(self):
         self._reset_position()
+
