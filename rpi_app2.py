@@ -1,9 +1,21 @@
 import math
+try:
+    from servo import ServoMotor
+    from stepper import StepperMotor
+except ImportError:
+    raise ImportError('cannot import servo and stepper motor classes ')
+
 
 def set_inner_angle(inner_angle):
-    print('inner angle on inner motor is set to: ' + str(inner_angle))
+    try:
+        stepper.setAngle()
+    except:
+        print('inner angle on inner motor is set to: ' + str(inner_angle))
 def set_outer_angle(outer_angle):
-    print('outer angle on outer motor is set to: ' + str(outer_angle))
+    try:
+        servo.setAngle()
+    except:
+        print('outer angle on outer motor is set to: ' + str(outer_angle))
 
 def convert_xy_to_angles(x, y):
     try:
@@ -199,8 +211,11 @@ if __name__ == '__main__':
         left_up_corner= (-4.7, 15.35),
         right_up_corner=(4.7, 15.35)
     )
-
     pen = Pen()
+
+    stepper = StepperMotor()
+    servo = ServoMotor()
+
     #test 1
     start = (3, 10)
     end = (3, 6)
