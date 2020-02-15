@@ -1,0 +1,24 @@
+Brachiograph.py
+========================
+Setting
+	set needed data
+	set position of a pen
+	set PWM (pulse width modulation) frequency
+	set servo pulsewidth
+
+plot file = move pen 	xy() function
+	convert x/y co-ordinates into motor angles
+	convert a pair of angles to appropriate pulse widths
+	set angles = moves the servo motor
+	reset the ploter to initial point= parks the plotter?
+
+
+what is tqdm?so that even if your connection is broken, you can re-join the session without losing your place.
+
+The linedraw.py library converts bitmap images to vectors.
+The main use you will have for linedraw.py is to take a bitmap image file as input, and save the vectorised version as JSON file, to draw with the BrachioGraph.
+
+
+one degree of travel corresponds a difference of about 10µS
+
+how to draw vertical lines: def vertical lines -- line 340 brachiograph.py
