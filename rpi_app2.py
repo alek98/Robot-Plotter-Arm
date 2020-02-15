@@ -58,7 +58,7 @@ def draw_line(start = (0,0), end = (0,0)):
     #first of all, check if it's possible to draw a line = check drawable area = check boundaries
     line_is_drawable = boundaries.check_boundaries(start, end)
     if line_is_drawable is False:
-        return False
+        return ('this line is not drawable')
 
 
     #calculate length_of_step_x, length_of_step_y, number_of_steps
@@ -77,9 +77,6 @@ def draw_line(start = (0,0), end = (0,0)):
 
         pen.move_pen(pen_x, pen_y)
 
-        pen.set_current_position(pen_x, pen_y) #update current position of a pen
-
-
 
 
 
@@ -87,10 +84,10 @@ class Pen:
     def __init__(self):
         self._x = 0
         self._y = 0
-        self.inner_angle = -60
-        self.outer_angle = 90
+        self._inner_angle = -60
+        self._outer_angle = 90
         self.inner_arm = 8
-        self.outer_arm = 8
+        self.outer_arm = 8.2
 
 
     def get_current_position(self):
@@ -99,15 +96,29 @@ class Pen:
         self._x = x
         self._y = y
 
+    def get_current_angles(self):
+        return (self._inner_angle, self._outer_angle)
+
+    def set_current_angles(self, inner_angle, outer_angle):
+        self._inner_angle = inner_angle
+        self._outer_angle = outer_angle
+
+    def _update_positions_and_angles(self, x, y, inner_angle, outer_angle):
+        self.set_current_position(x, y)
+        self.set_current_angles(inner_angle, outer_angle)
+
+
     def park(self,start):
         #initializes the starting position of pen. moves pen to start coordinates
         x_start, y_start = start
         self.move_pen(x=x_start, y=y_start)
 
+
     def move_pen(self, x=0, y=0): # moving pen to new xy position
         inner_angle, outer_angle = convert_xy_to_angles(x, y)
         set_angles(inner_angle, outer_angle)
-        self.set_current_position(x, y) #update current position of a pen
+        # update current position of a pen and update current angles
+        self._update_positions_and_angles(x, y, inner_angle, outer_angle)
 
 
 
@@ -178,11 +189,23 @@ class Boundaries:
 
 
 
+def test(start, end):
+    draw_line(start, end)
+
 if __name__ == '__main__':
-    boundaries = Boundaries((-4,2), (5,2), (-4,7), (5,7))
+    boundaries = Boundaries(
+        left_down_corner= (-4.7, 5.85),
+        right_down_corner = (4.7, 5.85),
+        left_up_corner= (-4.7, 15.35),
+        right_up_corner=(4.7, 15.35)
+    )
+
     pen = Pen()
-    start = (-4,7)
-    end = (-11.4,11.4)
-    #draw_line(start,end)
-    print(convert_xy_to_angles(8,9))
-    print()
+    #test 1
+    start = (3, 10)
+    end = (3, 6)
+    test(start, end)
+    #test 2
+    start = (3, 8)
+    end = (-3, 8)
+    test(start, end)
