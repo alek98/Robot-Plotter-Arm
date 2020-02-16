@@ -6,9 +6,10 @@ class StepperMotor:
     def __init__(self):
         self.pin1,self.pin2,self.pin3,self.pin4 =  (5,7,31,29)        
         self.current_angle = 0
-        self.setup()
+        self._ONE_STEPPER_ANGLE = 360/50 # full circle divided by number of steps that stepper can made in a full circle
+        self._setup()
 
-    def setup(self):
+    def _setup(self):
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.pin1, GPIO.OUT)
         GPIO.setup(self.pin2, GPIO.OUT)
@@ -35,7 +36,7 @@ class StepperMotor:
         sleep(0.01)
 
     def transform_angle_to_steps(self,angle= 0):
-        steps = int(angle * 50 /360)
+        steps = int(angle * 50 /360) # it is the same as ( angle / self._ONE_STEPPER_ANGLE )
         return steps
 
     def setAngle(self,angle):
@@ -44,21 +45,20 @@ class StepperMotor:
             steps = self.transform_angle_to_steps(angle_to_move)
             for step in range(steps):
                 self.backward_step()
-                self.current_angle += 360/50
+                self.current_angle += self._ONE_STEPPER_ANGLE
         else:
             angle_to_move = abs(angle_to_move)
             steps = self.transform_angle_to_steps(angle_to_move)
             for step in range(steps):
                 self.forward_step()
-                self.current_angle -= 360/50
-        
-        
-        
+                self.current_angle -= self._ONE_STEPPER_ANGLE
 
 
 
+
+    # this method is never called. This an example of what should one movement represent
     def move(self, angle):
-        self.setup()
+        self._setup()
         self.setAngle(angle)
         GPIO.cleanup()
 
@@ -66,5 +66,5 @@ class StepperMotor:
         self.setAngle(0)
     
     def __del__(self):
-        #self._reset_position()
+        self._reset_position()
         GPIO.cleanup()

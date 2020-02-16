@@ -1,9 +1,25 @@
 import math
+from boundaries import Boundaries
 try:
     from servo import ServoMotor
     from stepper import StepperMotor
 except ImportError:
-    raise ImportError('cannot import servo and stepper motor classes ')
+    print('cannot import servo and stepper motor classes. \n Running virtual mode... ')
+    class ServoMotor:
+        def __init__(self):
+            self.mode = 'virtual mode'
+
+        def setAngle(self, angle):
+            print('outer angle on outer motor is set to: ' + str(angle))
+            pass
+
+    class StepperMotor:
+        def __init__(self):
+            self.mode = 'virtual mode'
+
+        def setAngle(self, angle):
+            print('inner angle on inner motor is set to: ' + str(angle))
+            pass
 
 
 def set_inner_angle(inner_angle):
@@ -36,7 +52,6 @@ def convert_xy_to_angles(x, y):
         raise ValueError(msg)
 
 def set_angles(inner_angle, outer_angle):
-    #take into consideration the starting angles
     set_inner_angle(inner_angle)
     set_outer_angle(outer_angle)
 
@@ -47,8 +62,8 @@ def calculations(start = (0,0), end = (0,0)):
     #start calculations
     start_x, start_y = start
     end_x, end_y = end
-    length_x = end_x - start_x #abs?
-    length_y = end_y - start_y #abs?
+    length_x = end_x - start_x
+    length_y = end_y - start_y
 
     length = math.sqrt(length_x ** 2 + length_y ** 2) #total line length
 
@@ -129,74 +144,6 @@ class Pen:
         self._update_positions_and_angles(x, y, inner_angle, outer_angle)
 
 
-
-class Boundaries:
-    def __init__(
-            self, left_down_corner = None, right_down_corner = None, left_up_corner = None, right_up_corner = None
-    ):
-        self._left_down_corner = left_down_corner
-        self._right_down_corner = right_down_corner
-        self._left_up_corner = left_up_corner
-        self._right_up_corner = right_up_corner
-
-    #setters
-    def set_left_down_corner(self, x, y):
-        self._left_down_corner = (x,y)
-
-    def set_right_down_corner(self, x, y):
-        self._right_down_corner = (x,y)
-
-    def set_left_up_corner(self, x, y):
-        self._left_up_corner = (x,y)
-
-    def set__right_up_corner(self, x, y):
-        self._right_up_corner = (x,y)
-
-    #getters
-    def get_left_down_corner(self):
-        return self._left_down_corner
-
-    def get_right_down_corner(self):
-        return self._right_down_corner
-
-    def get_left_up_corner(self):
-        return self._left_up_corner
-
-    def get_right_up_corner(self):
-        return self._right_up_corner
-
-
-    def _check_coordinate_boundaries(self, coordinate):
-        x_min = self._left_down_corner[0]
-        x_max = self._right_down_corner[0]
-        y_min = self._left_down_corner[1]
-        y_max = self._left_up_corner[1]
-
-        x, y = coordinate
-
-        #x axis check
-        bool_x = ( x >= x_min and x <= x_max )
-        #y axis check
-        bool_y = ( y >= y_min and y <= y_max )
-
-        if(bool_x and bool_y):
-            return True
-        else:
-            return False
-
-
-    def check_boundaries(self, start, end):
-        #start and end parametrs should be tuples
-
-        #start coordinate
-        start_bool = self._check_coordinate_boundaries(start)
-        #end coordinate
-        end_bool = self._check_coordinate_boundaries(end)
-
-        return start_bool and end_bool
-
-
-
 def test(start, end):
     draw_line(start, end)
 
@@ -211,18 +158,19 @@ if __name__ == '__main__':
 
     stepper = StepperMotor()
     servo = ServoMotor()
-    
-    servo.setAngle(0)
+
+
     #test 1
     start = (3, 10)
     end = (3, 6)
-    #test(start, end)
-    
+    test(start, end)
+
     #test 2
     start = (3, 8)
     end = (-3, 8)
     #test(start, end)
     
-    
+    # explicit deletation is need in order to call destructor.
+    # in destructors we reset positions of motors to 0 degrees and clean GPIO
     del stepper
     del servo
