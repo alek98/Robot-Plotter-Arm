@@ -7,6 +7,7 @@ class ServoMotor:
     def __init__(self):
         self._PWM_PIN = 12
         self._full_angle_list = []
+        self._current_pulse_width = 0
         self._create_full_angle_list()
         self._rpi = pigpio.pi()
         self._setAngleSetup()
@@ -41,18 +42,18 @@ class ServoMotor:
         
         pulse_width = self._full_angle_list[int(angle)][1]
         
-        if (pulse_width != self._rpi.get_servo_pulsewidth(self._PWM_PIN)):
-            print("moving to %s" % int(angle))
+        if (pulse_width != self._current_pulse_width):
             self._rpi.set_servo_pulsewidth(self._PWM_PIN, pulse_width)
             sleep(sleep_time)
             self._rpi.set_servo_pulsewidth(self._PWM_PIN, 0)
-        else:
-            print("No angle movement needed")
+            self._current_pulse_width = pulse_width
+        #else:
+        #    print("No angle movement needed")
 
 
     def _reset_position(self):
 
-        self.setAngle(0, sleep_time=0.2)
+        self.setAngle(0, sleep_time=1)
 
     def __del__(self):
         self._reset_position()
