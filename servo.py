@@ -36,14 +36,18 @@ class ServoMotor:
         self._rpi.set_servo_pulsewidth(self._PWM_PIN, 0)
         
     
-    def setAngle(self,angle, sleep_time = 0.05):
+    def setAngle(self,angle, sleep_time = 0.02):
         assert(angle <= 135 and angle >= 0)
         
         pulse_width = self._full_angle_list[int(angle)][1]
         
-        self._rpi.set_servo_pulsewidth(self._PWM_PIN, pulse_width)
-        sleep(sleep_time)
-        self._rpi.set_servo_pulsewidth(self._PWM_PIN, 0)
+        if (pulse_width != self._rpi.get_servo_pulsewidth(self._PWM_PIN)):
+            print("moving to %s" % int(angle))
+            self._rpi.set_servo_pulsewidth(self._PWM_PIN, pulse_width)
+            sleep(sleep_time)
+            self._rpi.set_servo_pulsewidth(self._PWM_PIN, 0)
+        else:
+            print("No angle movement needed")
 
 
     def _reset_position(self):
