@@ -33,6 +33,8 @@ class ServoMotor:
         for angle in range(136):
             self._full_angle_list.append([angle, int(angles_to_pw(angle))])
 
+        #print(self._full_angle_list)
+
     def _setAngleSetup(self):
         self._rpi.set_PWM_frequency(self._PWM_PIN, 50) # 50Hz
         self._rpi.set_servo_pulsewidth(self._PWM_PIN, 0)
@@ -55,7 +57,8 @@ class ServoMotor:
 
     def _reset_position(self):
         #reseting position to an angle zero
-        for angle in range(self._current_angle, 0):
+        
+        for angle in range(self._current_angle, -1, -1):
             self.setAngle(angle)
 
     def __del__(self):
