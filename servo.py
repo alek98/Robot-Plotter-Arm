@@ -47,6 +47,7 @@ class ServoMotor:
 
 
     def _reset_position(self):
+
         self.setAngle(0, sleep_time=0.2)
 
     def __del__(self):

@@ -106,7 +106,7 @@ def draw_line(start = (0,0), end = (0,0)):
 class Pen:
     def __init__(self):
         self._x = 0
-        self._y = 0
+        self._y = 16.2
         self._inner_angle = -60
         self._outer_angle = 90
         self.inner_arm = 8
@@ -133,8 +133,16 @@ class Pen:
 
     def park(self,start):
         #initializes the starting position of pen. moves pen to start coordinates
-        x_start, y_start = start
-        self.move_pen(x=x_start, y=y_start)
+        end = start
+        start = (self._x, self._y)
+
+        length_of_step_x, length_of_step_y, number_of_steps = calculations(start, end)
+        pen_x = self._x
+        pen_y = self._y
+        for step in range(number_of_steps):
+            pen_x += length_of_step_x
+            pen_y += length_of_step_y
+            pen.move_pen(pen_x, pen_y)
 
 
     def move_pen(self, x=0, y=0): # moving pen to new xy position
