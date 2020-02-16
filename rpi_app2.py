@@ -111,6 +111,7 @@ class Pen:
         self._outer_angle = 90
         self.inner_arm = 8
         self.outer_arm = 8.2
+        self.move_pen(self._x, self._y)
 
 
     def get_current_position(self):
@@ -145,7 +146,7 @@ class Pen:
             pen.move_pen(pen_x, pen_y)
 
 
-    def move_pen(self, x=0, y=0): # moving pen to new xy position
+    def move_pen(self, x=0.0, y=0.0): # moving pen to new xy position
         inner_angle, outer_angle = convert_xy_to_angles(x, y)
         set_angles(inner_angle, outer_angle)
         # update current position of a pen and update current angles
