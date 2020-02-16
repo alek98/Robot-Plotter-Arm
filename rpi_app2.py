@@ -27,7 +27,12 @@ def set_inner_angle(inner_angle):
     
 def set_outer_angle(outer_angle):
     servo.setAngle(outer_angle)
-    
+
+def set_angles(inner_angle, outer_angle):
+    set_inner_angle(inner_angle)
+    set_outer_angle(outer_angle)
+
+
 
 def convert_xy_to_angles(x, y):
     try:
@@ -50,10 +55,6 @@ def convert_xy_to_angles(x, y):
     except ValueError:
         msg = '(' + str(x) + ' , ' + str(y) + ')' + ' coordinates are not reachable with inner and outer arms'
         raise ValueError(msg)
-
-def set_angles(inner_angle, outer_angle):
-    set_inner_angle(inner_angle)
-    set_outer_angle(outer_angle)
 
 
 def calculations(start = (0,0), end = (0,0)):
@@ -107,11 +108,11 @@ class Pen:
     def __init__(self):
         self._x = 0
         self._y = 16.2
-        self._inner_angle = -60
-        self._outer_angle = 90
+        self._inner_angle = 0
+        self._outer_angle = 0
         self.inner_arm = 8
         self.outer_arm = 8.2
-        self.move_pen(self._x, self._y)
+        set_angles(self._inner_angle, self._outer_angle)
 
 
     def get_current_position(self):
@@ -157,6 +158,9 @@ def test(start, end):
     draw_line(start, end)
 
 if __name__ == '__main__':
+    stepper = StepperMotor()
+    servo = ServoMotor()
+
     boundaries = Boundaries(
         left_down_corner= (-4.7, 5.85),
         right_down_corner = (4.7, 5.85),
@@ -165,8 +169,7 @@ if __name__ == '__main__':
     )
     pen = Pen()
 
-    stepper = StepperMotor()
-    servo = ServoMotor()
+
 
 
     #test 1
