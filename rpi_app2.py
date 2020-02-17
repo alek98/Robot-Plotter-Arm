@@ -3,10 +3,17 @@ from boundaries import Boundaries
 try:
     from servo import ServoMotor
     from stepper import StepperMotor
+    mode = 'normal'
 except ImportError:
     print('cannot import servo and stepper motor classes. \n Running virtual mode... ')
     from virtual_servo import ServoMotor
     from virtual_stepper import StepperMotor
+
+
+    mode = 'virtual'
+    global plot_counter
+    plot_counter = 0
+
 
 
 # =========hardware functions===========
@@ -14,11 +21,20 @@ except ImportError:
 
 def set_inner_angle(inner_angle):
     stepper.setAngle(inner_angle)
-    
+
+    # ========ploting graphic======
+    #==============================
+    if (mode == 'virtual' and 'pen' in globals()):
+        global plot_counter
+        if (plot_counter <= 4):
+            plot_counter += 1
+        else:
+            plot_counter = 0
+            stepper.plot(inner_angle, pen)
+
+
 def set_outer_angle(outer_angle):
     servo.setAngle(outer_angle)
-
-
 
 
 
@@ -26,6 +42,7 @@ def set_outer_angle(outer_angle):
 # =======================================
 
 def set_angles(inner_angle, outer_angle):
+
     set_inner_angle(inner_angle)
     set_outer_angle(outer_angle)
 
