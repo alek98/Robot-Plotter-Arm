@@ -22,7 +22,7 @@ except ImportError:
 def set_inner_angle(inner_angle):
     stepper.setAngle(inner_angle)
 
-    # ========ploting graphic======
+    # ========plotting graphic======
     #==============================
     if (mode == 'virtual' and 'pen' in globals()):
         global plot_counter

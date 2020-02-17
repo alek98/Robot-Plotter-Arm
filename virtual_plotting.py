@@ -38,21 +38,21 @@ class Triangle:
         x1 = [ self.A[0], self.B[0], self.C[0] ]
         y1 = [ self.A[1], self.B[1], self.C[1] ]
 
-        point_list = []
+
+
         point1, = plt.plot([self.A[0]], [self.A[1]], marker='o', markersize=3, color="red")
         point2, = plt.plot([self.B[0]], [self.B[1]], marker='o', markersize=3, color="red")
-
+        point_xy,=plt.plot([self.A[0]], [self.A[1]], marker='o', markersize=1, color="green")
         points, = plt.plot(x1,y1, color='blue')
 
+        point_list = []
         point_list.append(point1)
         point_list.append(point2)
         point_list.append(points)
 
-        plt.pause(0.007)
+        plt.pause(0.001)
         for p in point_list:
             p.remove()
-
-
 
     def __str__(self):
         msg = 'A: ' + str(self.A) + '\nB: ' + str(self. B) +  '\nC: ' + str(self.C)
