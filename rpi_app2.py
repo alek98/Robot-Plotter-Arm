@@ -5,22 +5,12 @@ try:
     from stepper import StepperMotor
 except ImportError:
     print('cannot import servo and stepper motor classes. \n Running virtual mode... ')
-    class ServoMotor:
-        def __init__(self):
-            self.mode = 'virtual mode'
+    from virtual_servo import ServoMotor
+    from virtual_stepper import StepperMotor
 
-        def setAngle(self, angle):
-            print('outer angle on outer motor is set to: ' + str(angle))
-            pass
 
-    class StepperMotor:
-        def __init__(self):
-            self.mode = 'virtual mode'
-
-        def setAngle(self, angle):
-            print('inner angle on inner motor is set to: ' + str(angle))
-            pass
-
+# =========hardware functions===========
+# ======================================
 
 def set_inner_angle(inner_angle):
     stepper.setAngle(inner_angle)
@@ -28,10 +18,16 @@ def set_inner_angle(inner_angle):
 def set_outer_angle(outer_angle):
     servo.setAngle(outer_angle)
 
+
+
+
+
+# ===========software functions==========
+# =======================================
+
 def set_angles(inner_angle, outer_angle):
     set_inner_angle(inner_angle)
     set_outer_angle(outer_angle)
-
 
 
 def convert_xy_to_angles(x, y):
@@ -82,24 +78,12 @@ def draw_line(start = (0,0), end = (0,0)):
     #first of all, check if it's possible to draw a line = check drawable area = check boundaries
     line_is_drawable = boundaries.check_boundaries(start, end)
     if line_is_drawable is False:
-        return ('this line is not drawable')
+        return 'this line is not drawable'
 
+    pen.park(start=start) # move pen so that it's on the start coordinate
 
-    #calculate length_of_step_x, length_of_step_y, number_of_steps
-    #this calculation is in separate function just to make code cleaner
-    length_of_step_x, length_of_step_y, number_of_steps = calculations(start,end)
-
-
-    pen.park(start=start) #move pen so that it's on the start coordinate
-
-    pen_x, pen_y = pen.get_current_position()
-
-    #actual line drawing
-    for step in range(number_of_steps):
-        pen_x += length_of_step_x
-        pen_y += length_of_step_y
-
-        pen.move_pen(pen_x, pen_y)
+    # actual line drawing
+    pen.move_pen(start, end)
 
 
 
@@ -123,7 +107,6 @@ class Pen:
 
     def get_current_angles(self):
         return (self._inner_angle, self._outer_angle)
-
     def set_current_angles(self, inner_angle, outer_angle):
         self._inner_angle = inner_angle
         self._outer_angle = outer_angle
@@ -134,22 +117,39 @@ class Pen:
 
 
     def park(self,start):
-        #initializes the starting position of pen. moves pen to start coordinates
+        # initializes the starting position of pen. moves pen to start coordinates
+        # start coordinate is should be initial position of pen
+        # we should park our pen at start coordinate.
+        # therefore start coordinate is our stop. starting position is our current coordinate
         end = start
         start = (self._x, self._y)
 
+        self.move_pen(start, end)
+
+
+
+    def move_pen(self, start, end):
+        pen_x, pen_y = pen.get_current_position()
+
+        # calculate length_of_step_x, length_of_step_y, number_of_steps
+        # this calculation is in separate function just to make code cleaner
         length_of_step_x, length_of_step_y, number_of_steps = calculations(start, end)
-        pen_x = self._x
-        pen_y = self._y
+
+        # actual line drawing
         for step in range(number_of_steps):
             pen_x += length_of_step_x
             pen_y += length_of_step_y
-            pen.move_pen(pen_x, pen_y)
+
+            pen._move_pen_to_xy(pen_x, pen_y)
 
 
-    def move_pen(self, x=0.0, y=0.0): # moving pen to new xy position
+    # moving pen to new xy position
+    def _move_pen_to_xy(self, x=0.0, y=0.0):
         inner_angle, outer_angle = convert_xy_to_angles(x, y)
+
+        # set_angles function will call hardware functions for moving motors to a specific angle
         set_angles(inner_angle, outer_angle)
+
         # update current position of a pen and update current angles
         self._update_positions_and_angles(x, y, inner_angle, outer_angle)
 
@@ -171,16 +171,15 @@ if __name__ == '__main__':
 
 
 
-
     #test 1
     start = (3, 10)
     end = (3, 6)
-    test(start, end)
+    # test(start, end)
 
     #test 2
     start = (3, 8)
     end = (-3, 8)
-    #test(start, end)
+    test(start, end)
     
     # explicit deletation is need in order to call destructor.
     # in destructors we reset positions of motors to 0 degrees and clean GPIO
