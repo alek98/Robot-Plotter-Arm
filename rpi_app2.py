@@ -29,7 +29,6 @@ def set_angles(inner_angle, outer_angle):
     set_inner_angle(inner_angle)
     set_outer_angle(outer_angle)
 
-
 def convert_xy_to_angles(x, y):
     try:
         inner_angle = outer_angle = 0
