@@ -54,11 +54,32 @@ class Boundaries:
 
 
     def check_boundaries(self, start, end):
+        # checks if line from start coordinate to end coordinate is inside the drawable area
         #start and end parametrs should be tuples
 
-        #start coordinate
+        #check if start coordinate is inside drawable area
         start_bool = self._check_coordinate_boundaries(start)
-        #end coordinate
+        #check if end coordinate is inside drawable area
         end_bool = self._check_coordinate_boundaries(end)
 
         return start_bool and end_bool
+
+    #not used? check it
+    def find_corners(self):
+        x_min = self._left_down_corner[0]
+        x_max = self._right_down_corner[0]
+        y_min = self._left_down_corner[1]
+        y_max = self._left_up_corner[1]
+
+
+        return x_min, x_max, y_min, y_max
+
+    def get_x_length(self):
+        x_min = self._left_down_corner[0]
+        x_max = self._right_down_corner[0]
+        return x_max - x_min
+
+    def get_y_length(self):
+        y_min = self._left_down_corner[1]
+        y_max = self._left_up_corner[1]
+        return y_max - y_min

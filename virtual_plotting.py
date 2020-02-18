@@ -26,6 +26,7 @@ class Triangle:
         return [ self.A[0], self.B[0], self.C[0]] , [self.A[1], self.B[1], self.C[1]]
 
     def plot(self):
+
         # naming the x axis
         plt.xlabel('x - axis')
         # naming the y axis
@@ -43,14 +44,14 @@ class Triangle:
         point1, = plt.plot([self.A[0]], [self.A[1]], marker='o', markersize=3, color="red")
         point2, = plt.plot([self.B[0]], [self.B[1]], marker='o', markersize=3, color="red")
         point_xy,=plt.plot([self.A[0]], [self.A[1]], marker='o', markersize=1, color="green")
-        points, = plt.plot(x1,y1, color='blue')
+        arms, = plt.plot(x1,y1, color='blue')
 
         point_list = []
         point_list.append(point1)
         point_list.append(point2)
-        point_list.append(points)
+        point_list.append(arms)
 
-        plt.pause(0.001)
+        plt.pause(0.005)
         for p in point_list:
             p.remove()
 

@@ -1,5 +1,6 @@
 import math
 from boundaries import Boundaries
+from photos import Photo
 try:
     from servo import ServoMotor
     from stepper import StepperMotor
@@ -14,8 +15,6 @@ except ImportError:
     global plot_counter
     plot_counter = 0
 
-
-
 # =========hardware functions===========
 # ======================================
 
@@ -26,7 +25,7 @@ def set_inner_angle(inner_angle):
     #==============================
     if (mode == 'virtual' and 'pen' in globals()):
         global plot_counter
-        if (plot_counter <= 4):
+        if (plot_counter <= 5):
             plot_counter += 1
         else:
             plot_counter = 0
@@ -80,10 +79,12 @@ def calculations(start = (0,0), end = (0,0)):
 
     length = math.sqrt(length_x ** 2 + length_y ** 2) #total line length
 
-    number_of_steps = int(length * 50)
-
-    length_of_step_x = length_x / number_of_steps
-    length_of_step_y = length_y / number_of_steps
+    number_of_steps = int(length * 2)
+    if number_of_steps == 0:
+        length_of_step_x = length_of_step_y = 0
+    else:
+        length_of_step_x = length_x / number_of_steps
+        length_of_step_y = length_y / number_of_steps
     
 
 
@@ -102,6 +103,32 @@ def draw_line(start = (0,0), end = (0,0)):
     pen.move_pen(start, end)
 
 
+def draw_photo1(photo, boundaries):
+    # this function draws more precise
+    lines = photo.get_lines(boundaries)
+    for line in lines:
+        start_dot = end_dot = line[0]
+        index = 0
+        for dot in line:
+            end_dot = dot
+
+            if index == 0:
+                index += 1
+                continue
+
+            draw_line(start=start_dot, end=end_dot)
+            start_dot = end_dot
+
+
+def draw_photo2(photo, boundaries):
+
+    lines = photo.get_lines(boundaries)
+    max_line_length = 0
+    for line in lines:
+        max_line_length = max(max_line_length, len(line))
+        start_dot = line[0]
+        end_dot = line[-1]
+        draw_line(start=start_dot, end=end_dot)
 
 
 class Pen:
@@ -170,8 +197,26 @@ class Pen:
         self._update_positions_and_angles(x, y, inner_angle, outer_angle)
 
 
-def test(start, end):
+def test():
+    start = (3, 10)
+    end = (3, 6)
     draw_line(start, end)
+
+    start = (3, 8)
+    end = (-3, 8)
+    draw_line(start, end)
+
+def test2():
+    from time import time
+    t1 = time()
+    #draw_photo1(photo, boundaries)
+    t2 = time()
+    print('time1: ' , round(t2 - t1, 2))
+
+    t1 = time()
+    draw_photo2(photo, boundaries)
+    t2 = time()
+    print('time2: ' , round(t2 - t1, 2))
 
 if __name__ == '__main__':
     stepper = StepperMotor()
@@ -184,19 +229,10 @@ if __name__ == '__main__':
         right_up_corner=(4.7, 15.35)
     )
     pen = Pen()
+    photo = Photo('africa')
 
+    test2()
 
-
-    #test 1
-    start = (3, 10)
-    end = (3, 6)
-    # test(start, end)
-
-    #test 2
-    start = (3, 8)
-    end = (-3, 8)
-    test(start, end)
-    
     # explicit deletation is need in order to call destructor.
     # in destructors we reset positions of motors to 0 degrees and clean GPIO
     del stepper
