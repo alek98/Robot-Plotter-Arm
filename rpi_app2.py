@@ -1,6 +1,7 @@
 import math
 from boundaries import Boundaries
 from photos import Photo
+from time import sleep
 try:
     from servo import ServoMotor
     from stepper import StepperMotor
@@ -79,7 +80,7 @@ def calculations(start = (0,0), end = (0,0)):
 
     length = math.sqrt(length_x ** 2 + length_y ** 2) #total line length
 
-    number_of_steps = int(length * 2)
+    number_of_steps = int(length * 20)
     if number_of_steps == 0:
         length_of_step_x = length_of_step_y = 0
     else:
@@ -103,9 +104,9 @@ def draw_line(start = (0,0), end = (0,0)):
     pen.move_pen(start, end)
 
 
-def draw_photo1(photo, boundaries):
+def draw_photo1(photo):
     # this function draws more precise
-    lines = photo.get_lines(boundaries)
+    lines = photo.get_lines()
     for line in lines:
         start_dot = end_dot = line[0]
         index = 0
@@ -120,9 +121,9 @@ def draw_photo1(photo, boundaries):
             start_dot = end_dot
 
 
-def draw_photo2(photo, boundaries):
+def draw_photo2(photo):
 
-    lines = photo.get_lines(boundaries)
+    lines = photo.get_lines()
     max_line_length = 0
     for line in lines:
         max_line_length = max(max_line_length, len(line))
@@ -206,15 +207,15 @@ def test():
     end = (-3, 8)
     draw_line(start, end)
 
-def test2():
+def test2(photo):
     from time import time
     t1 = time()
-    #draw_photo1(photo, boundaries)
+    draw_photo1(photo)
     t2 = time()
     print('time1: ' , round(t2 - t1, 2))
 
     t1 = time()
-    draw_photo2(photo, boundaries)
+    draw_photo2(photo)
     t2 = time()
     print('time2: ' , round(t2 - t1, 2))
 
@@ -229,10 +230,9 @@ if __name__ == '__main__':
         right_up_corner=(4.7, 15.35)
     )
     pen = Pen()
-    photo = Photo('africa')
-
-    test2()
-
+    photo = Photo('palm')
+    test2(photo)
+    sleep(3)
     # explicit deletation is need in order to call destructor.
     # in destructors we reset positions of motors to 0 degrees and clean GPIO
     del stepper

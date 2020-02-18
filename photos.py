@@ -1,6 +1,7 @@
 from linedraw import *
 import matplotlib.pyplot as plt
 from boundaries import Boundaries
+import json
 # ======================user friendly methods for working with lines================
 # ==================================================================================
 # uses linedraw.py which contains methods for working with images and converting them to json
@@ -11,10 +12,38 @@ class Photo:
         self._path = self._folder_path + self._photo_name
         self._lines = None
 
-    def convert_to_lines(self):
-        image_to_json(self._path, draw_contours=2, draw_hatch=16)
+    def convert_to_lines(self, boundaries=None):
 
-    def get_lines(self, boundaries = None):
+        '''
+        this method should not be called on rpi.
+        this is very heavy to execute and has a lot of calculations.
+        Called that method only from pc.
+        '''
+        # ======first save=======
+        # =======================
+        image_to_json(self._photo_name, draw_contours=2, draw_hatch=16)
+
+        # ======second save======
+        # =======================
+        # read json file
+        with open(self._path + '.json', 'r') as json_photo:
+            data = json_photo.read()
+        obj = json.loads(data)
+
+        # parse file
+        lines = json.loads(data)
+
+        #for some reason 3rd party linedraw.py is strangly saving coordinates. Therefore resize in needed.
+
+        self._lines = self._resize_lines(lines, boundaries)
+
+        with open(self._path + '.json', 'w', encoding='utf-8') as f:
+            json.dump(self._lines, f, ensure_ascii=False, indent=4)
+
+
+
+
+    def get_lines(self):
         '''
         returns list of lines, where one line is consisted of tuples (x, y)
 
@@ -34,17 +63,12 @@ class Photo:
         # read json file
         with open(self._path + '.json', 'r') as json_photo:
             data = json_photo.read()
-        obj = json.loads(data)
-
-        # parse file
         lines = json.loads(data)
 
-        #for some reason 3rd party linedraw.py is strangly saving coordinates. Therefore resize in needed.
-
-        self._lines = self._resize_lines(lines, boundaries)
+        #keep lines in memory so that we dont have to read json object more then once
+        self._lines = lines
 
         return self._lines
-
 
 
 
@@ -177,7 +201,6 @@ class Photo:
         return resized_lines
 
 
-
     def plot_dots(self):
         lines = self.get_lines()
         # naming the x axis
@@ -212,14 +235,18 @@ class Photo:
 
         plt.show()
 
+
+
+
 if __name__ == '__main__':
-    photo = Photo('africa')
-    #photo.convert_to_lines()
+
     boundaries = Boundaries(
         left_down_corner= (-4.7, 5.85),
         right_down_corner = (4.7, 5.85),
         left_up_corner= (-4.7, 15.35),
         right_up_corner=(4.7, 15.35)
     )
-    lines = photo.get_lines(boundaries)
+    photo = Photo('keybord')
+    photo.convert_to_lines(boundaries)
     photo.plot_dots()
+

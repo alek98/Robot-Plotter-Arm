@@ -51,7 +51,7 @@ class Triangle:
         point_list.append(point2)
         point_list.append(arms)
 
-        plt.pause(0.005)
+        plt.pause(0.001)
         for p in point_list:
             p.remove()
 

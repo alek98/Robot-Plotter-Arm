@@ -11,9 +11,9 @@ import time
 from PIL import Image, ImageDraw, ImageOps
 
 # file settings
-export_path = "../images/out.svg"
-svg_folder = "../images/"
-json_folder = "../images/"
+export_path = "images/out.svg"
+svg_folder =  "images/"
+json_folder = "images/"
 
 # CV
 no_cv = False
@@ -35,7 +35,7 @@ def image_to_json(
     ):
 
     lines=vectorise(
-        image_filename, resolution,
+        json_folder + image_filename, resolution,
         draw_contours, repeat_contours,
         draw_hatch, repeat_hatch,
         )
@@ -134,8 +134,8 @@ def vectorise(
         for r in range(repeat_hatch):
             lines += hatches
 
-
-    f = open(svg_folder + image_filename + ".svg", 'w')
+# my change. original is :   f = open(svg_folder + image_filename + ".svg", 'w')
+    f = open( image_filename + ".svg", 'w')
     f.write(makesvg(lines))
     f.close()
     segments = 0
