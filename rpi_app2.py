@@ -80,7 +80,7 @@ def calculations(start = (0,0), end = (0,0)):
 
     length = math.sqrt(length_x ** 2 + length_y ** 2) #total line length
 
-    number_of_steps = int(length * 20)
+    number_of_steps = int(length * 2) # TODO: change the mupliple number to 2 when running on rpi.
     if number_of_steps == 0:
         length_of_step_x = length_of_step_y = 0
     else:
@@ -122,11 +122,8 @@ def draw_photo1(photo):
 
 
 def draw_photo2(photo):
-
     lines = photo.get_lines()
-    max_line_length = 0
     for line in lines:
-        max_line_length = max(max_line_length, len(line))
         start_dot = line[0]
         end_dot = line[-1]
         draw_line(start=start_dot, end=end_dot)
@@ -199,20 +196,29 @@ class Pen:
 
 
 def test():
+    #this function will plot a rectangle
     start = (3, 10)
-    end = (3, 6)
+    end = (3, 5)
     draw_line(start, end)
 
-    start = (3, 8)
-    end = (-3, 8)
+    start = (3,5)
+    end = (-3,5)
+    draw_line(start, end)
+
+    start = (-3, 5)
+    end = (-3, 10)
+    draw_line(start, end)
+
+    start = (-3,10)
+    end = (3,10)
     draw_line(start, end)
 
 def test2(photo):
     from time import time
-    t1 = time()
-    draw_photo1(photo)
-    t2 = time()
-    print('time1: ' , round(t2 - t1, 2))
+    # t1 = time()
+    # draw_photo1(photo)
+    # t2 = time()
+    # print('time1: ' , round(t2 - t1, 2))
 
     t1 = time()
     draw_photo2(photo)
@@ -231,8 +237,9 @@ if __name__ == '__main__':
     )
     pen = Pen()
     photo = Photo('palm')
-    test2(photo)
-    sleep(3)
+    #test2(photo)
+    test()
+    sleep(5)
     # explicit deletation is need in order to call destructor.
     # in destructors we reset positions of motors to 0 degrees and clean GPIO
     del stepper

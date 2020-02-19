@@ -21,7 +21,7 @@ class Photo:
         '''
         # ======first save=======
         # =======================
-        image_to_json(self._photo_name, draw_contours=2, draw_hatch=16)
+        image_to_json(self._photo_name, draw_contours=3, draw_hatch=40)
 
         # ======second save======
         # =======================
@@ -39,37 +39,6 @@ class Photo:
 
         with open(self._path + '.json', 'w', encoding='utf-8') as f:
             json.dump(self._lines, f, ensure_ascii=False, indent=4)
-
-
-
-
-    def get_lines(self):
-        '''
-        returns list of lines, where one line is consisted of tuples (x, y)
-
-        When reading JSON file it returns a list of lines, each of which is a list of points. Like this:
-        ===============================================================================================
-                        [                     list of lines                                           ]
-                        [ [               line            ] , [           line                ] ,...  ]
-        list_of_lines = [ [ [x,y] , [x,y] , [x,y] , [x,y] ] , [ [x,y] , [x,y] , [x,y] , [x,y] ] ,...  ]
-        ================================================================================================
-        '''
-
-        # if resizing was done, there is not a reason to do it once more
-        if (self._lines is not None):
-            return self._lines
-
-        #else code. If resizing isn't done. Resizing is must have
-        # read json file
-        with open(self._path + '.json', 'r') as json_photo:
-            data = json_photo.read()
-        lines = json.loads(data)
-
-        #keep lines in memory so that we dont have to read json object more then once
-        self._lines = lines
-
-        return self._lines
-
 
 
     def _resize_lines(self, lines, boundaries):
@@ -201,6 +170,35 @@ class Photo:
         return resized_lines
 
 
+    def get_lines(self):
+        '''
+        returns list of lines, where one line is consisted of tuples (x, y)
+
+        When reading JSON file it returns a list of lines, each of which is a list of points. Like this:
+        ===============================================================================================
+                        [                     list of lines                                           ]
+                        [ [               line            ] , [           line                ] ,...  ]
+        list_of_lines = [ [ [x,y] , [x,y] , [x,y] , [x,y] ] , [ [x,y] , [x,y] , [x,y] , [x,y] ] ,...  ]
+        ================================================================================================
+        '''
+
+        # if resizing was done, there is not a reason to do it once more
+        if (self._lines is not None):
+            return self._lines
+
+        #else code. If resizing isn't done. Resizing is must have
+        # read json file
+        with open(self._path + '.json', 'r') as json_photo:
+            data = json_photo.read()
+        lines = json.loads(data)
+
+        #keep lines in memory so that we dont have to read json object more then once
+        self._lines = lines
+
+        return self._lines
+
+
+
     def plot_dots(self):
         lines = self.get_lines()
         # naming the x axis
@@ -246,7 +244,7 @@ if __name__ == '__main__':
         left_up_corner= (-4.7, 15.35),
         right_up_corner=(4.7, 15.35)
     )
-    photo = Photo('keybord')
-    photo.convert_to_lines(boundaries)
+    photo = Photo('africa')
+    #photo.convert_to_lines(boundaries)
     photo.plot_dots()
 
