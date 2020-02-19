@@ -21,7 +21,7 @@ class Photo:
         '''
         # ======first save=======
         # =======================
-        image_to_json(self._photo_name, draw_contours=3, draw_hatch=40)
+        image_to_json(self._photo_name, draw_contours=2, draw_hatch=20)
 
         # ======second save======
         # =======================
@@ -244,7 +244,7 @@ if __name__ == '__main__':
         left_up_corner= (-4.7, 15.35),
         right_up_corner=(4.7, 15.35)
     )
-    photo = Photo('africa')
-    #photo.convert_to_lines(boundaries)
+    photo = Photo('star')
+    # photo.convert_to_lines(boundaries)
     photo.plot_dots()
 
