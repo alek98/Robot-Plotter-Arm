@@ -21,6 +21,7 @@ class Photo:
         '''
         # ======first save=======
         # =======================
+        # greater draw_hatch means less precision. 20 is optimal for this project
         image_to_json(self._photo_name, draw_contours=2, draw_hatch=20)
 
         # ======second save======
@@ -244,7 +245,7 @@ if __name__ == '__main__':
         left_up_corner= (-4.7, 15.35),
         right_up_corner=(4.7, 15.35)
     )
-    photo = Photo('star')
+    photo = Photo('palm')
     # photo.convert_to_lines(boundaries)
     photo.plot_dots()
 

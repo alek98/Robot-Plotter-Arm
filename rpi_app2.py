@@ -80,7 +80,14 @@ def calculations(start = (0,0), end = (0,0)):
 
     length = math.sqrt(length_x ** 2 + length_y ** 2) #total line length
 
-    number_of_steps = int(length * 2) # TODO: change the mupliple number to 2 when running on rpi.
+    # N tells how much do you want to divide one line.
+    # More division, more precise.
+    # greater N means more precision when drawing.
+    # if running on rpi, N should be 2. It is precise enough.
+    # if running on pc, N should be greater. Around 20 is enough.
+    N = 20
+
+    number_of_steps = int(length * N)
     if number_of_steps == 0:
         length_of_step_x = length_of_step_y = 0
     else:
@@ -237,8 +244,8 @@ if __name__ == '__main__':
     )
     pen = Pen()
     photo = Photo('palm')
-    #test2(photo)
-    test()
+    test2(photo)
+    #test()
     sleep(5)
     # explicit deletation is need in order to call destructor.
     # in destructors we reset positions of motors to 0 degrees and clean GPIO

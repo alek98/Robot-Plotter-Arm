@@ -2,6 +2,9 @@ import math
 import matplotlib.pyplot as plt
 
 class Triangle:
+    '''
+    In order to understand namings, see documentation. Page 6, plotting simulation
+    '''
     def __init__(self):
         self.inner_angle = 0
         self.alfa = 0
