@@ -204,21 +204,10 @@ class Pen:
 
 def test():
     #this function will plot a rectangle
-    start = (3, 10)
-    end = (3, 5)
+    start = (3, 12)
+    end = (3, 6)
     draw_line(start, end)
 
-    start = (3,5)
-    end = (-3,5)
-    draw_line(start, end)
-
-    start = (-3, 5)
-    end = (-3, 10)
-    draw_line(start, end)
-
-    start = (-3,10)
-    end = (3,10)
-    draw_line(start, end)
 
 def test2(photo):
     from time import time
@@ -243,9 +232,9 @@ if __name__ == '__main__':
         right_up_corner=(4.7, 15.35)
     )
     pen = Pen()
-    photo = Photo('palm')
+    photo = Photo('star')
     test2(photo)
-    #test()
+    # test() #simple test
     sleep(5)
     # explicit deletation is need in order to call destructor.
     # in destructors we reset positions of motors to 0 degrees and clean GPIO
