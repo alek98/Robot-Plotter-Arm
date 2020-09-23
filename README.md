@@ -1,11 +1,10 @@
 # Robot Plotter Arm project
 
-### The goal of this python project was to make a plotter which can draw lines, shapes and images. It is cheap, simple and easy to build. The focus isn't on a hardware itself, but on a software.
-#
-#
+### The goal of this project was to make a plotter which can draw lines, shapes and images. It is cheap & simple arm-writer, easy to build. The focus isn't on a hardware itself, but on a software.
 
+#
+<img src="documentation/images%20and%20gifs/hardware.jpg" width="30%" >
 
-(add the image)
 #### Hardware components:
  - Raspberry Pi 3
  - one stepper motor
@@ -17,13 +16,15 @@
 #
 #
 #
-##### There is also a software simulation, where actual hardware parts aren't necessary. 
-The main entry point is file rpi_app2.py. 
-If hardware parts are connected, software should start moving motors and draw the image. If hardware aren't connected software should start drawing simulation. Here is the picture of software simulation.
-(add the image)
+### There is also a software simulation, where actual hardware parts aren't necessary:
+<img src="documentation/images%20and%20gifs/draw%20a%20star.gif">
 
 ***
-Before drawing you need:
+### The main entry point is file rpi_app2.py. 
+If hardware parts are connected, software should start moving motors and draw the image. If hardware aren't connected software should start drawing simulation.
+
+***
+### Before drawing you will need:
 - StepperMotor object and ServoMotor object initialized
     - they execute the motor movement 
 - Boundaries object 
@@ -35,7 +36,7 @@ Before drawing you need:
 - Photo object
     -  takes photo name as a parameter
     
-When all of the above mentioned is fulfilled, you can call methods for drawing photos (one of the following methods)
+#### When all of the above mentioned is fulfilled, you can call methods for drawing photos (one of the following methods)
 ```
 draw_photo1(photo)
 draw_photo2(photo)
@@ -58,8 +59,7 @@ draw_photo2(photo)
 ```
 
 ***
-For more detailed documentation check out:
-https://github.com/alek98/Robot-Plotter-Arm/tree/master/documentation
+For more details check out full documentation.
 
 
 
