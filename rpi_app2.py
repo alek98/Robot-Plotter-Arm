@@ -125,7 +125,7 @@ def draw_photo1(photo):
                 continue
 
             draw_line(start=start_dot, end=end_dot)
-            start_dot = end_dot
+            start_dot = enddr_dot
 
 
 def draw_photo2(photo):
