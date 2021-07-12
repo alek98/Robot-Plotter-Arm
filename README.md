@@ -59,7 +59,14 @@ draw_photo2(photo)
 ```
 
 ***
-For more details check out full documentation.
+For more details check out full [documentation](/documentation).
 
-
-
+***
+#### References
+- https://www.brachiograph.art/index.html
+- https://learn.adafruit.com/adafruits-raspberry-pi-lesson-10-stepper-motors/software
+- https://www.instructables.com/Servo-Motor-Control-With-Raspberry-Pi/
+- http://abyz.me.uk/rpi/pigpio/python.html#set_servo_pulsewidth
+- https://sourceforge.net/p/raspberry-gpio-python/wiki/PWM/
+- https://tutorials-raspberrypi.com/raspberry-pi-servo-motor-control/
+- https://opensource.com/article/18/3/diy-plotter-arduino
